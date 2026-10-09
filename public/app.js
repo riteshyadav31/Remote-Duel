@@ -2,6 +2,7 @@ const socket = io();
 const $ = id => document.getElementById(id);
 let myMark = null, currentCode = null, latestState = null, toastTimer;
 const lobby = $("lobby"), game = $("game");
+const inviteCode = new URLSearchParams(location.search).get("room")?.trim().toUpperCase();
 const audio = window.RemoteDuelAudio;
 const musicToggle = $("musicToggle"), soundToggle = $("soundToggle");
 function updateAudioControls() {
@@ -66,7 +67,9 @@ $("createBtn").addEventListener("click", () => {
 });
 $("joinBtn").addEventListener("click", () => {
   error("lobbyError");
+  $("joinBtn").disabled = true;
   socket.emit("joinRoom", {code:$("roomCode").value, name:name()}, result => {
+    $("joinBtn").disabled = false;
     if (!result?.ok) return error("lobbyError", result?.error || "Could not join room.");
     myMark = "O"; enterGame(result.code);
   });
@@ -74,8 +77,11 @@ $("joinBtn").addEventListener("click", () => {
 $("roomCode").addEventListener("keydown", e => { if (e.key === "Enter") $("joinBtn").click(); });
 $("playerName").addEventListener("keydown", e => { if (e.key === "Enter") $("createBtn").click(); });
 $("copyBtn").addEventListener("click", async () => {
-  const url = `${location.origin}/?room=${currentCode}`;
-  try { await navigator.clipboard.writeText(url); showToast("Invite link copied!"); }
+  const inviteUrl = new URL(location.href);
+  inviteUrl.search = "";
+  inviteUrl.searchParams.set("room", currentCode);
+  inviteUrl.hash = "";
+  try { await navigator.clipboard.writeText(inviteUrl.toString()); showToast("Invite link copied!"); }
   catch { showToast(`Share room code: ${currentCode}`); }
 });
 $("board").addEventListener("click", e => {
@@ -151,8 +157,17 @@ socket.on("rematchExpired", () => {
   showToast("Rematch expired. Room closed.");
   setTimeout(() => { location.href = location.pathname; }, 1200);
 });
+function showRoomInvite() {
+  if (!inviteCode) return;
+  $("roomCode").value = inviteCode;
+  $("inviteNotice").textContent = `You've been invited to room ${inviteCode}. Click Join room to enter the match.`;
+  $("inviteNotice").classList.remove("hidden");
+  $("joinBtn").classList.add("invite-ready");
+  $("joinBtn").focus({ preventScroll: true });
+  $("lobby").scrollIntoView({ behavior: "smooth", block: "center" });
+}
+showRoomInvite();
 socket.on("connect", () => {
-  const code = new URLSearchParams(location.search).get("room");
-  if (code && !$("roomCode").value) $("roomCode").value = code;
+  showRoomInvite();
 });
 socket.on("disconnect", () => { if (currentCode) error("gameError", "Connection lost. Reconnect to continue playing."); });

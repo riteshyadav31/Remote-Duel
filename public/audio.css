@@ -37,6 +37,21 @@
   cursor: not-allowed;
 }
 
+.invite-notice {
+  margin: 0 0 12px;
+  padding: 11px 12px;
+  border: 1px solid #a7f3d055;
+  border-radius: 9px;
+  background: #a7f3d00d;
+  color: var(--mint);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.invite-ready {
+  box-shadow: 0 0 0 2px #a7f3d055, 0 0 22px #a7f3d022;
+}
+
 @media (max-width: 500px) {
   .topbar-tools {
     gap: 10px;

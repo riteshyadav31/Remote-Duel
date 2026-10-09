@@ -5,6 +5,7 @@
   <meta name="theme-color" content="#0b1020">
   <meta name="description" content="Challenge a friend to real-time multiplayer Tic-Tac-Toe. Create a room and share the code.">
   <title>Remote Duel — Play Together</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
@@ -22,6 +23,7 @@
         <input id="playerName" maxlength="18" placeholder="e.g. Ritesh" autocomplete="nickname">
         <button id="createBtn" class="primary">Create a room <span>↗</span></button>
         <div class="or"><span></span> OR JOIN A FRIEND <span></span></div>
+        <p id="inviteNotice" class="invite-notice hidden" role="status"></p>
         <div class="join-row"><input id="roomCode" maxlength="6" placeholder="ROOM CODE" aria-label="Room code"><button id="joinBtn" class="secondary">Join room</button></div>
         <p id="lobbyError" class="error" role="alert"></p>
       </div>

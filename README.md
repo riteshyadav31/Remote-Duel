@@ -17,7 +17,7 @@ npm install
 npm start
 ```
 
-Open http://localhost:3000. For two-device testing on the same Wi-Fi, open `http://YOUR_COMPUTER_LAN_IP:3000` on the other device. For friends outside your network, deploy it publicly (below).
+Open http://localhost:3000. Create a room and copy the invite link; when a friend opens it, their room code is prefilled and they can join with one click. For two-device testing on the same Wi-Fi, open `http://YOUR_COMPUTER_LAN_IP:3000` on the other device. For friends outside your network, deploy it publicly (below).
 
 ## Deploy to Render (public URL)
 1. Push this project to a GitHub repository.
