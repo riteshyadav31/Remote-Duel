@@ -8,10 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/audio.css">
 </head>
 <body>
   <main class="shell">
-    <header class="topbar"><a class="brand" href="/"><span class="brand-icon">✳</span> REMOTE<span>DUEL</span></a><span class="live"><i></i> REAL-TIME MULTIPLAYER</span></header>
+    <header class="topbar"><a class="brand" href="/"><span class="brand-icon">✳</span> REMOTE<span>DUEL</span></a><div class="topbar-tools"><div class="audio-controls" aria-label="Audio settings"><button id="musicToggle" class="audio-toggle" type="button" aria-pressed="true" title="Toggle background music">♫ <span>Music</span></button><button id="soundToggle" class="audio-toggle" type="button" aria-pressed="true" title="Toggle sound effects">◖ <span>Sound</span></button></div><span class="live"><i></i> REAL-TIME MULTIPLAYER</span></div></header>
     <section class="hero" id="lobby">
       <div class="eyebrow">TWO PLAYERS · ONE WINNER</div>
       <h1>Good friends.<br><span>Great rivals.</span></h1>
@@ -46,5 +47,5 @@
     <footer><span>MADE FOR FRIENDS, NEAR OR FAR</span><span>REMOTE DUEL © 2026</span></footer>
   </main>
   <div id="toast" class="toast" role="status"></div>
-  <script src="/socket.io/socket.io.js"></script><script src="/app.js"></script>
+  <script src="/socket.io/socket.io.js"></script><script src="/audio.js"></script><script src="/app.js"></script>
 </body></html>

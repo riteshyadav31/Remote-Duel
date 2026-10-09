@@ -28,8 +28,12 @@ Open http://localhost:3000. For two-device testing on the same Wi-Fi, open `http
 
 The app uses Socket.IO WebSockets with polling fallback. Keep the server process running while playing. In-memory rooms reset when the server restarts, which is fine for casual matches.
 
+## Audio
+Remote Duel includes a synthesized ambient soundtrack and game sound effects, with separate Music and Sound toggles in the header. Audio starts after the first player interaction (browser autoplay policy) and both preferences are saved in the browser.
+
 ## Project files
 - `server.js` — authoritative room state and move validation
 - `public/index.html` — game UI
-- `public/style.css` — responsive styling
+- `public/style.css` and `public/audio.css` — responsive styling
+- `public/audio.js` — synthesized background music and sound effects
 - `public/app.js` — multiplayer client

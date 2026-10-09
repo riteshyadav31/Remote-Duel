@@ -2,6 +2,34 @@ const socket = io();
 const $ = id => document.getElementById(id);
 let myMark = null, currentCode = null, latestState = null, toastTimer;
 const lobby = $("lobby"), game = $("game");
+const audio = window.RemoteDuelAudio;
+const musicToggle = $("musicToggle"), soundToggle = $("soundToggle");
+function updateAudioControls() {
+  if (!audio.available) {
+    musicToggle.disabled = true;
+    soundToggle.disabled = true;
+    musicToggle.title = "Audio is not supported by this browser";
+    soundToggle.title = "Audio is not supported by this browser";
+    return;
+  }
+  musicToggle.setAttribute("aria-pressed", String(audio.musicEnabled));
+  soundToggle.setAttribute("aria-pressed", String(audio.effectsEnabled));
+  musicToggle.classList.toggle("audio-off", !audio.musicEnabled);
+  soundToggle.classList.toggle("audio-off", !audio.effectsEnabled);
+  musicToggle.title = `Background music ${audio.musicEnabled ? "on" : "off"}`;
+  soundToggle.title = `Sound effects ${audio.effectsEnabled ? "on" : "off"}`;
+}
+musicToggle.addEventListener("click", () => {
+  audio.unlock();
+  audio.toggleMusic();
+  updateAudioControls();
+});
+soundToggle.addEventListener("click", () => {
+  audio.unlock();
+  audio.toggleEffects();
+  updateAudioControls();
+});
+updateAudioControls();
 function name() { return $("playerName").value.trim() || "Player"; }
 function showToast(message) {
   $("toast").textContent = message; $("toast").classList.add("show");
@@ -68,9 +96,26 @@ $("rematchBtn").addEventListener("click", () => {
 });
 $("leaveBtn").addEventListener("click", () => { location.href = location.pathname; });
 socket.on("state", state => {
+  const previousState = latestState;
   latestState = state;
   const me = state.players.find(p => p.mark === myMark);
   if (!me) { myMark = null; return; }
+  if (state.status === "playing" && previousState?.status !== "playing" && state.board.every(mark => !mark)) {
+    if (previousState?.status === "finished") audio.playAccept();
+    else if (state.players.length === 2) audio.playJoin();
+  }
+  if (previousState?.rematch?.pending !== true && state.rematch?.pending && state.rematch.requestedBy !== socket.id) {
+    audio.playRequest();
+  }
+  if (previousState?.board) {
+    const placedMark = state.board.find((mark, index) => mark && previousState.board[index] !== mark);
+    if (placedMark) audio.playMove(placedMark);
+  }
+  if (previousState?.status === "playing" && state.status === "finished") {
+    if (state.winner === myMark) audio.playWin();
+    else if (state.winner) audio.playLose();
+    else audio.playDraw();
+  }
   $("nameX").textContent = state.players.find(p => p.mark === "X")?.name || "Waiting…";
   $("nameO").textContent = state.players.find(p => p.mark === "O")?.name || "Waiting…";
   $("playerX").classList.toggle("active", state.turn === "X" && state.status === "playing");
