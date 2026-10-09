@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="description" content="Challenge a friend to real-time multiplayer Tic-Tac-Toe. Create a room and share the code.">
+  <title>Remote Duel — Play Together</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar"><a class="brand" href="/"><span class="brand-icon">✳</span> REMOTE<span>DUEL</span></a><span class="live"><i></i> REAL-TIME MULTIPLAYER</span></header>
+    <section class="hero" id="lobby">
+      <div class="eyebrow">TWO PLAYERS · ONE WINNER</div>
+      <h1>Good friends.<br><span>Great rivals.</span></h1>
+      <p class="sub">A quick game of strategy, wherever you both are.</p>
+      <div class="panel lobby-panel">
+        <label for="playerName">YOUR PLAYER NAME</label>
+        <input id="playerName" maxlength="18" placeholder="e.g. Ritesh" autocomplete="nickname">
+        <button id="createBtn" class="primary">Create a room <span>↗</span></button>
+        <div class="or"><span></span> OR JOIN A FRIEND <span></span></div>
+        <div class="join-row"><input id="roomCode" maxlength="6" placeholder="ROOM CODE" aria-label="Room code"><button id="joinBtn" class="secondary">Join room</button></div>
+        <p id="lobbyError" class="error" role="alert"></p>
+      </div>
+      <div class="how"><div><b>01</b><span>Create a room</span></div><div><b>02</b><span>Share the code</span></div><div><b>03</b><span>Play live</span></div></div>
+    </section>
+    <section class="game hidden" id="game">
+      <div class="game-head"><div><div class="eyebrow">PRIVATE MATCH</div><h2>Room <span id="roomLabel">------</span></h2></div><button class="copy-btn" id="copyBtn">Copy invite ↗</button></div>
+      <div class="players">
+        <div class="player-card active" id="playerX"><div class="mark x">×</div><div><small>PLAYER X</small><strong id="nameX">Waiting…</strong></div><span class="turn-dot"></span></div>
+        <div class="vs">VS</div>
+        <div class="player-card" id="playerO"><div class="mark o">○</div><div><small>PLAYER O</small><strong id="nameO">Waiting…</strong></div><span class="turn-dot"></span></div>
+      </div>
+      <div class="status" id="status">Waiting for your friend to join…</div>
+      <div class="board" id="board" role="grid" aria-label="Tic-Tac-Toe board">
+        <button class="cell" data-index="0" aria-label="Top left square"></button><button class="cell" data-index="1" aria-label="Top middle square"></button><button class="cell" data-index="2" aria-label="Top right square"></button>
+        <button class="cell" data-index="3" aria-label="Middle left square"></button><button class="cell" data-index="4" aria-label="Center square"></button><button class="cell" data-index="5" aria-label="Middle right square"></button>
+        <button class="cell" data-index="6" aria-label="Bottom left square"></button><button class="cell" data-index="7" aria-label="Bottom middle square"></button><button class="cell" data-index="8" aria-label="Bottom right square"></button>
+      </div>
+      <div class="game-actions"><button id="rematchBtn" class="primary hidden">Play again ↻</button><button id="leaveBtn" class="text-btn">Leave room</button></div>
+      <p id="gameError" class="error" role="alert"></p>
+      <div class="rules"><strong>HOW TO PLAY</strong><p>Take turns placing your mark. Get three in a row — horizontally, vertically, or diagonally — to win. If all nine squares fill with no three in a row, it’s a draw. X goes first.</p></div>
+    </section>
+    <footer><span>MADE FOR FRIENDS, NEAR OR FAR</span><span>REMOTE DUEL © 2026</span></footer>
+  </main>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="/socket.io/socket.io.js"></script><script src="/app.js"></script>
+</body></html>
